@@ -316,7 +316,7 @@ static void handle_event(int inotify_instance, int *watched, char **filenames,
          p += sizeof(struct inotify_event) + event->len) {
         event = (struct inotify_event *)p;
 
-        for (int i = 0; i < watched_len; i++) {
+        for (size_t i = 0; i < watched_len; i++) {
             if (watched[i] == event->wd) {
                 fprintf(stderr, "%s ", filenames[i]);
                 counter[i] += 1;
@@ -326,9 +326,14 @@ static void handle_event(int inotify_instance, int *watched, char **filenames,
     }
 }
 
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 /* Prints event mask values in a human-readable format */
 static void print_event(uint32_t event)
 {
+	UNUSED(print_event);
+
     if (event & IN_ACCESS) {
         fprintf(stderr, "IN_ACCESS ");
     }
@@ -363,9 +368,11 @@ static void print_event(uint32_t event)
         fprintf(stderr, "IN_OPEN ");
     }
 }
+#pragma GCC diagnostic pop
+
 
 /* Saves number of recorded events for each
-   executable t 'uses.log' */
+   executable to 'uses.log' */
 static void save_result(char **filenames, int *counter, size_t arr_len)
 {
     FILE *savefile;
@@ -381,7 +388,7 @@ static void save_result(char **filenames, int *counter, size_t arr_len)
         if (counter[i] == 0)
             continue;
 
-        // fprintf(stdout, "%d %s\n", counter[i], filenames[i]);
+        fprintf(savefile, "%d %s\n", counter[i], filenames[i]);
     }
 
     fclose(savefile);
