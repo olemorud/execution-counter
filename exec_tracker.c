@@ -24,7 +24,8 @@ static void save_result(char **filenames, int *counter, size_t arr_len);
 /* This code is a bit over-commented in general  */
 int main(int argc, char *const argv[])
 {
-    /* Get null terminated list of files to watch, create counter of same size
+    /*
+	  Get null terminated list of files to watch, create counter of same size
      */
 
     char **file_names;
